@@ -1,15 +1,12 @@
 {
   "dataStudio": {
-    "name": "Křeček v kolečku",
-    "logoUrl": "https://example.com/hamster_logo.png",
-    "organization": "Vaše Organizace",
-    "description": "Animovaný křeček podle metriky",
+    "name": "Hamster Viz",
+    "logoUrl": "https://ondrejsvec.github.io/hamster-viz/hamster_logo.png",
+    "organization": "Ondrej Svec",
+    "description": "Custom hamster visualization for Looker Studio",
     "components": {
       "visualization": {
         "script": "index.html"
-      },
-      "config": {
-        "script": "config.html"
       }
     }
   }
