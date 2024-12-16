@@ -2,35 +2,66 @@
 <html>
 <head>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; }
-    .hamster-wheel { position: relative; width: 200px; height: 200px; margin: 50px auto; }
-    .hamster { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
-    .wheel { border: 5px solid #333; border-radius: 50%; width: 100%; height: 100%; animation: spin 0s linear infinite; }
-    .resting { animation: none; }
+    body {
+      font-family: Arial, sans-serif; 
+      text-align: center;
+    }
+    .hamster-wheel {
+      position: relative; 
+      width: 200px; 
+      height: 200px; 
+      margin: 50px auto;
+    }
+    .hamster {
+      position: absolute; 
+      top: 50%; 
+      left: 50%; 
+      transform: translate(-50%, -50%);
+    }
+    .wheel {
+      border: 5px solid #333; 
+      border-radius: 50%; 
+      width: 100%; 
+      height: 100%; 
+      animation: spin 0s linear infinite;
+    }
+    .resting {
+      animation: none;
+    }
     @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
   </style>
+  <script src="https://unpkg.com/@google/dscc@1.0.4/dscc.min.js"></script>
 </head>
 <body>
   <div class="hamster-wheel">
-    <div class="hamster">
-      🐹
-    </div>
+    <div class="hamster">🐹</div>
     <div class="wheel"></div>
   </div>
   <script>
     dscc.subscribeToData((data) => {
+      // Validace a zpracování parametrů
       const params = dscc.getSettings();
-      const min = params.MIN || 0;
-      const max = params.MAX || 100;
-      const metric = data.tables.DEFAULT[0].metrics[0];
+      const min = parseFloat(params.MIN) || 0;
+      const max = parseFloat(params.MAX) || 100;
 
+      // Zajištění, že data jsou k dispozici
+      if (!data.tables || !data.tables.DEFAULT || data.tables.DEFAULT.length === 0) {
+        console.error("No data available");
+        return;
+      }
+
+      // Načtení metriky
+      const metric = data.tables.DEFAULT[0]?.metrics[0];
       const value = metric ? metric[0] : 0;
-      const speed = value <= min ? 0 : (value - min) / (max - min);
 
+      // Výpočet rychlosti animace
+      const speed = value <= min ? 0 : (value - min) / (max - min);
       const wheel = document.querySelector('.wheel');
+
+      // Nastavení animace
       if (speed === 0) {
         wheel.classList.add('resting');
       } else {
